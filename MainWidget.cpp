@@ -1,7 +1,7 @@
-#include "MainWidget.h"
+#include "mainWidget.h"
 #include "ui_mainWidget.h"
 #include <QPainter>
-#include "myQSS.h"
+#include "myqss.h"
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QScrollBar>
@@ -66,7 +66,11 @@ void MainWidget::init_UI()
     ui->playListWidget->verticalScrollBar()->setStyleSheet(ListWidgetStyle());
     ui->localMusicWidget->verticalScrollBar()->setStyleSheet(ListWidgetStyle());
     ui->favorMusicWidget->verticalScrollBar()->setStyleSheet(ListWidgetStyle());
+
+    //进行界面初始化时 歌单应该是隐藏起来的 等到点击我的歌单按钮后才显示出来
     ui->nameListWidget->verticalScrollBar()->setStyleSheet(ListWidgetStyle());
+    ui->nameListWidget->hide();         //进行隐藏
+
     ui->musicListWidget->verticalScrollBar()->setStyleSheet(ListWidgetStyle());
     ui->playListWidget->setIcon(QIcon(":/image/image/image/music.png"));
     ui->localMusicWidget->setIcon(QIcon(":/image/image/image/music-file.png"));
@@ -89,7 +93,7 @@ void MainWidget::init_play()
     connect(player, &QMediaPlayer::stateChanged, this, &MainWidget::updatePlayBtn);
 }
 
-void MainWidget::init_actions()
+void MainWidget::init_actions()         //一系列的动作
 {
     //“当前播放”列表右键菜单初始化
     ui->playListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -168,7 +172,7 @@ void MainWidget::init_actions()
     menu_musiclist->addAction(action_musiclist_to_favor);
     menu_musiclist->addAction(action_musiclist_to_playlist);
 
-    //“换肤”的菜单项
+    //“换肤”的菜单项  //可以考虑不去new会怎样直接使用UI中原本自带的
     QAction *action_backgroud_to_default = new QAction(QIcon(":/image/image/image/default.png"),u8"更换到默认背景");
 	connect(action_backgroud_to_default,&QAction::triggered,this,&MainWidget::background_to_default);
     QAction *action_backgroud_setting=new QAction(QIcon(":/image/image/image/setting.png"),u8"自定义背景");
@@ -176,6 +180,11 @@ void MainWidget::init_actions()
     menu_changeSkin=new QMenu(this);
     menu_changeSkin->addAction(action_backgroud_to_default);
     menu_changeSkin->addAction(action_backgroud_setting);
+
+    //歌曲搜索按钮的实现
+    connect(ui->MusicSearch,SIGNAL(clicked()), this,SLOT(on_musicsraech_clicked()));
+//    connect(ui->btnPersonal,SIGNAL(clicked()), this,SLOT(on_btnPersonal_clicked()));
+
 }
 
 void MainWidget::init_sqlite()
@@ -683,7 +692,14 @@ void MainWidget::dropEvent(QDropEvent *event)
 }
 void MainWidget::on_btnQuit_clicked()
 {
-    close();
+//    close();
+    QMessageBox::StandardButton result=QMessageBox::question(this, "确认", "确定要退出工大云音乐吗？",
+                          QMessageBox::Yes|QMessageBox::No |QMessageBox::Cancel,
+                          QMessageBox::No);
+
+        if (result==QMessageBox::Yes){      //其他情况代表不做响应
+            exit(0);            //在主界面关闭窗口代表整个程序的退出
+        }
 }
 
 void MainWidget::on_btnPlay_clicked()
@@ -1024,3 +1040,46 @@ void MainWidget::on_btnAbout_clicked()
                                    "【音乐文件类型】添加过程中会自动过滤得到可播放的文件类型（.mp3/.flac/.mpga文件），所以添加时无需考虑文件类型，使用\"Ctrl+A\"选择文件夹内全部文件添加即可\n"
                                    "\n注：鼠标移动到不认识的按钮上，会有说明哦~\n");
 }
+
+void MainWidget::on_musicsraech_clicked(){
+    //this->hide();         //背景主界面不应该被藏起来
+    dialog1.show();         //展示搜索框
+    dialog1.exec();            //搜索框退出
+    //this->show();
+}
+
+void MainWidget::on_btnMusiclist_clicked(){
+    btnMusiclist_index++;       //每次按钮按下次数加1
+    if(btnMusiclist_index%2==1){    //代表奇数次按下  则显示歌单
+        ui->nameListWidget->show();         //歌单展示
+    }else ui->nameListWidget->hide();         //歌单隐藏
+
+}
+
+int MainWidget::doExec()
+{
+    this->result = Rejected;
+    loop = new QEventLoop();
+    loop->exec();
+    return result;
+}
+
+void MainWidget::on_btnPersonal_clicked(){      //此处主界面不隐藏起来
+    extern int quit_login;
+    quit_login=0;           //退出状态重置
+    personal= new PersonalDialog();
+
+    personal->show();
+    personal->exec();
+
+    if(quit_login==1){
+        qDebug()<<"quit"<<endl;
+        close();
+        this->hide();
+        this->~MainWidget();        //尝试进行销毁
+
+        loop->exit();
+        loop->deleteLater();
+    }
+}
+

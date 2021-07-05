@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/image">
-        <file>image/background/default.jpg</file>
         <file>image/image/quit.png</file>
         <file>image/image-hover/pase-hover.png</file>
         <file>image/image-hover/play-hover.png</file>
@@ -62,5 +61,29 @@
         <file>image/image/remove_dup.png</file>
         <file>image/image/about.png</file>
         <file>image/image/MyPlayer.png</file>
+        <file>image/image/search.png</file>
+        <file>image/image/search2.png</file>
+        <file>image/background/searchbackground.png</file>
+        <file>image/image/personal.png</file>
+        <file>image/background/welcome.jpg</file>
+        <file>image/image/item.png</file>
+        <file>image/image/report.png</file>
+        <file>image/headicon/00.ico</file>
+        <file>image/headicon/01.ico</file>
+        <file>image/headicon/02.ico</file>
+        <file>image/headicon/03.ico</file>
+        <file>image/headicon/04.ico</file>
+        <file>image/headicon/05.ico</file>
+        <file>image/headicon/06.ico</file>
+        <file>image/headicon/07.ico</file>
+        <file>image/headicon/11.ico</file>
+        <file>image/background/land.jpg</file>
+        <file>image/background/main.PNG</file>
+        <file>image/image/logout.png</file>
+        <file>image/background/default.jpg</file>
+        <file>image/headicon/00.jpg</file>
+        <file>image/headicon/01.jpg</file>
+        <file>image/headicon/02.jpg</file>
+        <file>image/background/personal.jpg</file>
     </qresource>
 </RCC>

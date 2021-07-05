@@ -9,6 +9,11 @@
 #include "MusicList.h"
 #include "LyricWidget.h"
 #include <QCloseEvent>
+#include "MusicSearchDialog.h"      //搜索框的头文件需要加进来
+#include "PersonalDialog.h"
+
+#include<qeventloop.h>
+#include<qevent.h>
 
 
 namespace Ui {
@@ -22,11 +27,23 @@ class MainWidget : public QWidget
 public:
     explicit MainWidget(QWidget *parent = nullptr);
     ~MainWidget() override;
+    int btnMusiclist_index=0;   //记录列表按钮的奇数偶数次
+
+    enum{Accepted, Rejected};
+    int doExec();
     
 private:
     Ui::Widget *ui;
+    MusicSearchDialog dialog1;
+
+//    QEventLoop* m_Loop;
+
+    int result;
+    QEventLoop *loop;
+
+
     void paintEvent(QPaintEvent *event) override;
-    
+
     //UI组件额外的一些处理
     void init_UI();
     
@@ -86,6 +103,8 @@ private:
     //更换皮肤的菜单
     QMenu *menu_changeSkin; 
 
+    PersonalDialog *personal;       //跳转个人信息的按钮
+
 protected:
     //窗口拖动时记录的起始点
     QPoint offset;
@@ -118,7 +137,7 @@ private slots:
     void on_btnCurMusic_clicked();
     void on_btnLocalMusic_clicked();
     void on_btnFavorMusic_clicked();
-    void on_btnQuit_clicked();    
+    void on_btnQuit_clicked();
     void on_btnMin_clicked();    
     void on_btnPlay_clicked();
     void on_btnNext_clicked();
@@ -160,6 +179,12 @@ private slots:
     void on_btnSortSinger_4_clicked();
     void on_btnSortTitle_4_clicked();
     void on_btnSortDuration_4_clicked();
+    void on_musicsraech_clicked();          //搜索按钮
+    void on_btnMusiclist_clicked();         //歌单展示按钮 可以隐藏可以展示
+    void on_btnPersonal_clicked();          //个人信息界面
+
+
+    //自定义终止函数
 };
 
 #endif // MAINWIDGET_H

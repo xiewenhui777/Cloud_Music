@@ -32,7 +32,15 @@ SOURCES += \
     MusicListWidget.cpp \
     MusicList.cpp \
     MusicListDialog.cpp \
-    LyricWidget.cpp
+    LyricWidget.cpp \
+    MusicSearchDialog.cpp \
+    WelcomeDialog.cpp \
+    PersonalDialog.cpp \
+    landwidget.cpp \
+    register.cpp \
+    changepassword.cpp \
+    forgetpassword.cpp \
+    information.cpp
 
 HEADERS += \
     Music.h \
@@ -42,13 +50,27 @@ HEADERS += \
     MusicList.h \
     MusicListDialog.h \
     LyricWidget.h \
-    ui_mainWidget.h \
-    ui_mainWidget.h
+    MusicSearchDialog.h \
+    WelcomeDialog.h \
+    PersonalDialog.h \
+    landwidget.h \
+    register.h \
+    changepassword.h \
+    forgetpassword.h \
+    information.h
 
 FORMS += \
     MusicListDialog.ui \
     mainWidget.ui \
-    LyricWidget.ui
+    LyricWidget.ui \
+    MusicSearchDialog.ui \
+    WelcomeDialog.ui \
+    PersonalDialog.ui \
+    landwidget.ui \
+    register.ui \
+    changepassword.ui \
+    forgetpassword.ui \
+    information.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
